@@ -1,0 +1,68 @@
+import Image from "@/components/commons/image";
+import Link from "next/link";
+import { FunctionComponent } from "react";
+
+export interface CategoryCardProps {
+  title: string;
+  href: string;
+  images: [string, string, string];
+}
+const CategoryCard: FunctionComponent<CategoryCardProps> = ({
+  title,
+  href,
+  images,
+}) => {
+  return (
+    <Link href={href} className="group block">
+      <article className="flex flex-col">
+        <div className="relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden">
+          <div className="absolute inset-0 grid grid-cols-[1fr_0.6fr] gap-0.5">
+            <div className="relative h-full overflow-hidden">
+              <Image
+                src={images[0]}
+                alt={`${title} - Photo 1`}
+                fill
+                sizes="(max-width: 640px) 30vw, (max-width: 1024px) 30vw, 20vw"
+                className="transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+
+            <div className="flex flex-col gap-0.5">
+              <div className="relative flex-1 overflow-hidden">
+                <Image
+                  src={images[1]}
+                  alt={`${title} - Photo 2`}
+                  fill
+                  sizes="(max-width: 640px) 20vw, (max-width: 1024px) 20vw, 15vw"
+                  className="transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="relative flex-1 overflow-hidden">
+                <Image
+                  src={images[2]}
+                  alt={`${title} - Photo 3`}
+                  fill
+                  sizes="(max-width: 640px) 20vw, (max-width: 1024px) 20vw, 15vw"
+                  className="transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute inset-0 bg-neutral-black/0 group-hover:bg-neutral-black/10 transition-colors duration-300" />
+        </div>
+
+        <div className="mt-2 sm:mt-3 px-0.5 sm:px-1">
+          <h3 className="text-body-base-bold sm:text-body-big-bold text-neutral-black group-hover:text-neutral-sub-text transition-colors">
+            {title}
+          </h3>
+          <p className="text-caption sm:text-body-small text-neutral-sub-text mt-0.5">
+            {images.length} Photos
+          </p>
+        </div>
+      </article>
+    </Link>
+  );
+};
+
+export default CategoryCard;
