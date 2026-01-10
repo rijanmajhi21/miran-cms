@@ -30,6 +30,8 @@
     "sharp": "0.34.2"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@playwright/test": "^1.49.0",
     "@tailwindcss/postcss": "^4.0.15",
     "@types/node": "^22.5.4",
     "@types/react": "19.2.1",
