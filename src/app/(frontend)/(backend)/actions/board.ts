@@ -79,11 +79,11 @@ export async function getBoardImagesBySlug(slug: string): Promise<PayloadBoardIm
   return getBoardImages(board.id)
 }
 
-// Helper to get image URL from media object
-export async function getImageUrl(
+// Helper to get image URL from media object (sync - not a server action)
+export function getImageUrl(
   media: PayloadMedia | string,
   size?: 'thumbnail' | 'card' | 'large',
-): Promise<string> {
+): string {
   if (typeof media === 'string') return media
 
   if (size && media.sizes?.[size]?.url) {
@@ -93,8 +93,8 @@ export async function getImageUrl(
   return media.url
 }
 
-// Helper to get full image URL
-export async function getFullImageUrl(url: string): Promise<string> {
+// Helper to get full image URL (sync - not a server action)
+export function getFullImageUrl(url: string): string {
   if (!url) return ''
   if (url.startsWith('http')) return url
   return url // Already relative, will work in same app
