@@ -41,14 +41,14 @@ export default buildConfig({
   sharp,
   plugins: [
     // Vercel Blob storage for media uploads (only enabled on Vercel)
-    ...(process.env.STORAGE_READ_WRITE_TOKEN
+    ...(process.env.BLOB_READ_WRITE_TOKEN
       ? [
           vercelBlobStorage({
             enabled: true,
             collections: {
               media: true,
             },
-            token: process.env.STORAGE_READ_WRITE_TOKEN,
+            token: process.env.BLOB_READ_WRITE_TOKEN,
           }),
         ]
       : []),
