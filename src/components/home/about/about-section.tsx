@@ -1,37 +1,36 @@
-import Image from "@/components/commons/image";
-import { FunctionComponent } from "react";
+import Image from '@/components/commons/image'
+import { FunctionComponent } from 'react'
 
 const AboutSection: FunctionComponent = () => {
   return (
     <section id="about" className="container">
       <div className="flex flex-col gap-6 md:gap-8">
         <div className="flex flex-col gap-1 text-center">
-          <h2 className="font-heading text-title-4 md:text-title-3">
-            About Me
-          </h2>
+          <h2 className="font-heading text-title-4 md:text-title-3">About Me</h2>
           <span className="text-body-base text-neutral-sub-text-alt">
-            Dedicated to turning moments into memories.
+            Graphic Designer • Motion Designer • Video Editor • Photographer
           </span>
         </div>
         <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-12">
           <div className="flex flex-col w-full md:w-1/2">
             <div className="space-y-4 text-body-base text-neutral-sub-text-alt">
               <p>
-                I&apos;m a passionate photographer with a keen eye for capturing
-                life&apos;s most precious moments. With years of experience
-                behind the lens, I specialize in creating stunning visual
-                stories that resonate with emotion and authenticity.
+                Hi, I&apos;m a graphic designer, motion graphic designer, and video editor currently
+                working with a travel agency (Bookmundi). My journey into visual design began with
+                simple curiosity — experimenting in Photoshop and creating vector portraits for
+                friends, a process that sparked my interest in visual expression.
               </p>
               <p>
-                Through a unique blend of technical expertise and artistic
-                vision, I transform ordinary moments into extraordinary
-                memories. Each photograph I take tells a story — preserving the
-                beauty and essence of life&apos;s special occasion.
+                Over time, my focus evolved. What started as an interest in design tools grew into a
+                deeper appreciation for storytelling, emotion, and visual clarity. Today, my work
+                leans toward minimal, clean design with a cinematic travel feel, where every frame
+                and element serves a purpose.
               </p>
               <p>
-                My journey is fueled by curiosity and a relentless drive to
-                explore new perspectives. I believe every frame holds the
-                potential to inspire and connect us all.
+                I care deeply about communicating ideas clearly — understanding the intent behind an
+                ad, the audience it speaks to, and crafting visuals that feel relatable and human.
+                Alongside my professional work, photography remains a creative escape, allowing me
+                to explore travel, landscapes, and mountains through a more personal lens.
               </p>
             </div>
           </div>
@@ -47,7 +46,7 @@ const AboutSection: FunctionComponent = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default AboutSection;
+export default AboutSection

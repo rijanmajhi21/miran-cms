@@ -1,4 +1,5 @@
-export { default } from "./header";
-export { default as DesktopNav } from "./desktop-nav";
-export { default as MobileMenu } from "./mobile-menu";
-export { navLinks, type NavLinkType } from "./nav-links";
+export { default } from './header'
+export { default as DesktopNav } from './desktop-nav'
+export { default as MobileMenu } from './mobile-menu'
+export { default as UserMenu } from './user-menu'
+export { navLinks, type NavLinkType } from './nav-links'
