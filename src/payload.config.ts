@@ -1,12 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
 import type { Adapter, GeneratedAdapter } from '@payloadcms/plugin-cloud-storage/types'
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-  GetObjectCommand,
-} from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig, type CollectionConfig } from 'payload'
@@ -21,31 +16,34 @@ import { BoardImages } from './collections/BoardImages'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-// Supabase S3 configuration
-const supabaseProjectRef = process.env.SUPABASE_PROJECT_REF || ''
-const s3Bucket = process.env.S3_BUCKET || 'media'
-const s3Endpoint = process.env.S3_ENDPOINT || ''
-const s3Region = process.env.S3_REGION || 'ap-southeast-1'
+// ============ SUPABASE STORAGE CONFIG ============
+// IMPORTANT: Set these in your environment variables!
+const S3_BUCKET = process.env.S3_BUCKET || 'media'
+const S3_ENDPOINT = process.env.S3_ENDPOINT || ''
+const S3_REGION = process.env.S3_REGION || 'ap-southeast-1'
+const S3_ACCESS_KEY = process.env.S3_ACCESS_KEY_ID || ''
+const S3_SECRET_KEY = process.env.S3_SECRET_ACCESS_KEY || ''
 
-// Create S3 client for Supabase Storage
+// Public URL base - THIS IS THE KEY SETTING!
+// Format: https://[project-ref].supabase.co/storage/v1/object/public/[bucket]
+const IMAGE_BASE_URL =
+  process.env.IMAGE_BASE_URL ||
+  'https://fwcsnhkbxinhqwcgotvo.supabase.co/storage/v1/object/public/media'
+
+// Create S3 client
 const getS3Client = () =>
   new S3Client({
-    endpoint: s3Endpoint,
-    region: s3Region,
+    endpoint: S3_ENDPOINT,
+    region: S3_REGION,
     credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+      accessKeyId: S3_ACCESS_KEY,
+      secretAccessKey: S3_SECRET_KEY,
     },
     forcePathStyle: true,
   })
 
-// Generate public URL for Supabase Storage
-const getPublicUrl = (fname: string) =>
-  `https://${supabaseProjectRef}.supabase.co/storage/v1/object/public/${s3Bucket}/${fname}`
-
 // Custom Supabase storage adapter
 const supabaseStorageAdapter: Adapter = ({
-  collection,
   prefix,
 }: {
   collection: CollectionConfig
@@ -53,19 +51,19 @@ const supabaseStorageAdapter: Adapter = ({
 }): GeneratedAdapter => ({
   name: 'supabase-s3',
 
-  // Generate public URL for Supabase Storage
+  // Generate public URL - returns FULL Supabase URL
   generateURL: ({ filename: fname }) => {
     const key = prefix ? `${prefix}/${fname}` : fname
-    return getPublicUrl(key)
+    return `${IMAGE_BASE_URL}/${key}`
   },
 
-  // Handle file uploads to Supabase S3
+  // Upload file to Supabase S3
   handleUpload: async ({ file }) => {
     const client = getS3Client()
     const key = prefix ? `${prefix}/${file.filename}` : file.filename
     await client.send(
       new PutObjectCommand({
-        Bucket: s3Bucket,
+        Bucket: S3_BUCKET,
         Key: key,
         Body: file.buffer,
         ContentType: file.mimeType,
@@ -73,25 +71,22 @@ const supabaseStorageAdapter: Adapter = ({
     )
   },
 
-  // Handle file deletion from Supabase S3
+  // Delete file from Supabase S3
   handleDelete: async ({ filename: fname }) => {
     const client = getS3Client()
     const key = prefix ? `${prefix}/${fname}` : fname
     await client.send(
       new DeleteObjectCommand({
-        Bucket: s3Bucket,
+        Bucket: S3_BUCKET,
         Key: key,
       }),
     )
   },
 
-  // Static handler - redirect to public URL or proxy the file
+  // Static handler - redirect to public Supabase URL
   staticHandler: async (req, { params: { filename: fname } }) => {
     const key = prefix ? `${prefix}/${fname}` : fname
-    const publicUrl = getPublicUrl(key)
-
-    // Redirect to the public Supabase URL
-    return Response.redirect(publicUrl, 302)
+    return Response.redirect(`${IMAGE_BASE_URL}/${key}`, 302)
   },
 })
 

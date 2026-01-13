@@ -2,13 +2,11 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Expose storage config to client
+  // Expose image base URL to client
   env: {
     NEXT_PUBLIC_IMAGE_BASE_URL:
       process.env.IMAGE_BASE_URL ||
-      `https://${process.env.SUPABASE_PROJECT_REF || 'fwcsnhkbxinhqwcgotvo'}.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET || 'media'}`,
-    NEXT_PUBLIC_SUPABASE_PROJECT_REF: process.env.SUPABASE_PROJECT_REF || 'fwcsnhkbxinhqwcgotvo',
-    NEXT_PUBLIC_S3_BUCKET: process.env.S3_BUCKET || 'media',
+      'https://fwcsnhkbxinhqwcgotvo.supabase.co/storage/v1/object/public/media',
   },
   // Increase body size limit for file uploads (default is 1MB)
   serverActions: {

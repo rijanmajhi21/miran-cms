@@ -1,16 +1,10 @@
 import type { PayloadMedia } from '@/types/board'
 
-// Image base URL - can be set directly or constructed from parts
-// Priority: IMAGE_BASE_URL > constructed from SUPABASE_PROJECT_REF
+// Image base URL - hardcoded fallback for reliability
 const IMAGE_BASE_URL =
   process.env.IMAGE_BASE_URL ||
   process.env.NEXT_PUBLIC_IMAGE_BASE_URL ||
-  (() => {
-    const projectRef =
-      process.env.SUPABASE_PROJECT_REF || process.env.NEXT_PUBLIC_SUPABASE_PROJECT_REF || ''
-    const bucket = process.env.S3_BUCKET || process.env.NEXT_PUBLIC_S3_BUCKET || 'media'
-    return projectRef ? `https://${projectRef}.supabase.co/storage/v1/object/public/${bucket}` : ''
-  })()
+  'https://fwcsnhkbxinhqwcgotvo.supabase.co/storage/v1/object/public/media'
 
 // Helper to get image URL from media object
 export function getImageUrl(
@@ -26,27 +20,29 @@ export function getImageUrl(
   return media.url
 }
 
-// Helper to get full image URL - converts old API URLs to storage URLs
+// Helper to get full image URL
+// Converts any relative/old URL to the correct Supabase URL
 export function getFullImageUrl(url: string): string {
   if (!url) return ''
 
-  // Already a full URL (http/https)
+  // Already a full Supabase URL - return as-is
+  if (url.includes('supabase.co')) return url
+
+  // Already a full URL (other domains) - return as-is
   if (url.startsWith('http')) return url
 
-  // Old Payload API URL format - extract filename and use storage URL
-  if (url.startsWith('/api/media/file/')) {
-    const filename = url.replace('/api/media/file/', '')
-    if (IMAGE_BASE_URL) {
-      return `${IMAGE_BASE_URL}/${filename}`
-    }
+  // Extract filename from various URL formats
+  let filename = url
+
+  // Old Payload API URL: /api/media/file/image.jpg
+  if (url.includes('/api/media/file/')) {
+    filename = url.split('/api/media/file/').pop() || url
+  }
+  // Just a path: /media/image.jpg or media/image.jpg
+  else if (url.includes('/')) {
+    filename = url.split('/').pop() || url
   }
 
-  // Generic relative URL - try to use storage base URL
-  if (IMAGE_BASE_URL && !url.startsWith('http')) {
-    // Extract just the filename from the path
-    const filename = url.split('/').pop() || url
-    return `${IMAGE_BASE_URL}/${filename}`
-  }
-
-  return url
+  // Return full Supabase URL
+  return `${IMAGE_BASE_URL}/${filename}`
 }
