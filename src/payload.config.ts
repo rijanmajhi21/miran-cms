@@ -70,6 +70,13 @@ export default buildConfig({
         region: process.env.S3_REGION || 'ap-southeast-1',
         forcePathStyle: true,
       },
+      acl: 'public-read',
+      // Generate public URL for Supabase Storage
+      generateFileURL: ({ filename }) => {
+        const projectRef = process.env.SUPABASE_PROJECT_REF || 'fwcsnhkbxinhqwcgotvo'
+        const bucket = process.env.S3_BUCKET || 'media'
+        return `https://${projectRef}.supabase.co/storage/v1/object/public/${bucket}/${filename}`
+      },
     }),
   ],
 })
