@@ -4,7 +4,8 @@ import { getBoards, getFullImageUrl, getImageUrl } from '@/lib/payload'
 import { FunctionComponent } from 'react'
 import type { Metadata } from 'next'
 
-export const revalidate = 60
+// Dynamic rendering - layout uses session headers
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Photo Gallery',

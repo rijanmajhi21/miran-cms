@@ -5,23 +5,15 @@ import MasonryGrid from '@/components/gallery/masonry-grid'
 import {
   getBoardBySlug,
   getBoardImagesBySlug,
-  getBoards,
   getFullImageUrl,
   getImageUrl,
 } from '@/lib/payload'
 
-export const revalidate = 60
+// Dynamic rendering - layout uses session headers
+export const dynamic = 'force-dynamic'
 
 interface PageProps {
   params: Promise<{ slug: string }>
-}
-
-export async function generateStaticParams() {
-  const boards = await getBoards()
-
-  return boards.map((board) => ({
-    slug: board.slug,
-  }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
