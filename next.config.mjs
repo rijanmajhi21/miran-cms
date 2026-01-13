@@ -2,6 +2,11 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Expose Supabase storage config to client
+  env: {
+    NEXT_PUBLIC_SUPABASE_PROJECT_REF: process.env.SUPABASE_PROJECT_REF || 'fwcsnhkbxinhqwcgotvo',
+    NEXT_PUBLIC_S3_BUCKET: process.env.S3_BUCKET || 'media',
+  },
   // Increase body size limit for file uploads (default is 1MB)
   serverActions: {
     bodySizeLimit: '5mb',

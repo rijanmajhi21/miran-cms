@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react'
 export interface CategoryCardProps {
   title: string
   href: string
-  images: (string | null | undefined)[]
+  images: (string | null)[]
   photoCount?: number
 }
 
