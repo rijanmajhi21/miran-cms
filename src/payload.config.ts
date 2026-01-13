@@ -59,17 +59,18 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    // Vercel Blob storage for media uploads (only enabled on Vercel)
-    ...(process.env.BLOB_READ_WRITE_TOKEN
-      ? [
-          vercelBlobStorage({
-            enabled: true,
-            collections: {
-              media: true,
-            },
-            token: process.env.BLOB_READ_WRITE_TOKEN,
-          }),
-        ]
-      : []),
+    // Vercel Blob storage for media uploads
+    // Check multiple possible token names
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        media: true,
+      },
+      token:
+        process.env.BLOB_READ_WRITE_TOKEN ||
+        process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
+        process.env.STORAGE_READ_WRITE_TOKEN ||
+        '',
+    }),
   ],
 })
