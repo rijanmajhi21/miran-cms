@@ -8,17 +8,19 @@ export const revalidate = 60
 const GalleryPage: FunctionComponent = async () => {
   const boards = await getBoards()
 
-  const categories = boards.map((board) => ({
-    slug: board.slug,
-    title: board.title,
-    description: board.description || '',
-    href: `/gallery/${board.slug}`,
-    heroImage:
-      typeof board.heroImage === 'string'
-        ? board.heroImage
-        : getFullImageUrl(getImageUrl(board.heroImage, 'card')),
-    images: [],
-  }))
+  const categories = await Promise.all(
+    boards.map(async (board) => ({
+      slug: board.slug,
+      title: board.title,
+      description: board.description || '',
+      href: `/gallery/${board.slug}`,
+      heroImage:
+        typeof board.heroImage === 'string'
+          ? board.heroImage
+          : await getFullImageUrl(await getImageUrl(board.heroImage, 'card')),
+      images: [],
+    })),
+  )
 
   return (
     <main>

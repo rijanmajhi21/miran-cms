@@ -4,11 +4,7 @@ import Image from '@/components/commons/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import {
-  XMarkIcon,
-  ArrowRightOnRectangleIcon,
-  Squares2X2Icon,
-} from '@heroicons/react/24/outline'
+import { XMarkIcon, ArrowRightOnRectangleIcon, Squares2X2Icon } from '@heroicons/react/24/outline'
 import { FunctionComponent } from 'react'
 import { navLinks } from './nav-links'
 import type { AuthUser } from '@/app/(frontend)/(backend)/actions/auth'
@@ -38,13 +34,7 @@ const MobileMenu: FunctionComponent<MobileMenuProps> = ({ isOpen, onClose, user 
       <div className="container">
         <div className="flex items-center justify-between py-4">
           <Link href="/" className="shrink-0" onClick={onClose}>
-            <Image
-              src="/logo/MIRAN.png"
-              alt="Miran Photography"
-              width={160}
-              height={26}
-              className="w-32 h-auto"
-            />
+            <span className="text-2xl font-bold">miran</span>
           </Link>
           <button
             onClick={onClose}
@@ -56,7 +46,7 @@ const MobileMenu: FunctionComponent<MobileMenuProps> = ({ isOpen, onClose, user 
         </div>
       </div>
 
-      <nav className="container py-8">
+      <nav className="container">
         <ul className="flex flex-col gap-6">
           {navLinks.map(({ href, label, icon: Icon }) => (
             <li key={label}>
