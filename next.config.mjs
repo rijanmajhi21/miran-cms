@@ -4,7 +4,12 @@ import { withPayload } from '@payloadcms/next/withPayload'
 const nextConfig = {
   // Increase body size limit for file uploads (default is 1MB)
   serverActions: {
-    bodySizeLimit: '10mb',
+    bodySizeLimit: '5mb',
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb',
+    },
   },
   // Your Next.js config here
   webpack: (webpackConfig) => {
