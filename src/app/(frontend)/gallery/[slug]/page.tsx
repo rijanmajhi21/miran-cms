@@ -2,12 +2,7 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import CategoryHero from '@/components/gallery/category-hero'
 import MasonryGrid from '@/components/gallery/masonry-grid'
-import {
-  getBoardBySlug,
-  getBoardImagesBySlug,
-  getFullImageUrl,
-  getImageUrl,
-} from '@/lib/payload'
+import { getBoardBySlug, getBoardImagesBySlug, getFullImageUrl, getImageUrl } from '@/lib/payload'
 
 // Dynamic rendering - layout uses session headers
 export const dynamic = 'force-dynamic'

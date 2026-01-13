@@ -1,9 +1,9 @@
-import { FunctionComponent } from "react";
-import CategoryCard from "./category-card";
-import { GalleryCategory } from "./constant";
+import { FunctionComponent } from 'react'
+import CategoryCard from './category-card'
+import { GalleryCategory } from './constant'
 
 interface CategoriesSectionProps {
-  categories: GalleryCategory[];
+  categories: GalleryCategory[]
 }
 
 const CategoriesSection: FunctionComponent<CategoriesSectionProps> = ({ categories }) => {
@@ -19,18 +19,25 @@ const CategoriesSection: FunctionComponent<CategoriesSectionProps> = ({ categori
 
         {categories.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
-            {categories.map((category) => (
-              <CategoryCard
-                key={category.slug}
-                title={category.title}
-                href={category.href}
-                images={
-                  category.images.length >= 3
-                    ? (category.images.slice(0, 3) as [string, string, string])
-                    : [category.heroImage, category.heroImage, category.heroImage]
-                }
-              />
-            ))}
+            {categories.map((category) => {
+              // Get up to 3 images, using heroImage as first fallback
+              const displayImages =
+                category.images.length > 0
+                  ? category.images.slice(0, 3)
+                  : category.heroImage
+                    ? [category.heroImage]
+                    : []
+
+              return (
+                <CategoryCard
+                  key={category.slug}
+                  title={category.title}
+                  href={category.href}
+                  images={displayImages}
+                  photoCount={category.images.length}
+                />
+              )
+            })}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -42,7 +49,7 @@ const CategoriesSection: FunctionComponent<CategoriesSectionProps> = ({ categori
         )}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default CategoriesSection;
+export default CategoriesSection
