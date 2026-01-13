@@ -2,8 +2,21 @@ import CategoriesSection from '@/components/gallery/categories-section'
 import GalleryHero from '@/components/gallery/gallery-hero'
 import { getBoards, getFullImageUrl, getImageUrl } from '@/lib/payload'
 import { FunctionComponent } from 'react'
+import type { Metadata } from 'next'
 
 export const revalidate = 60
+
+export const metadata: Metadata = {
+  title: 'Photo Gallery',
+  description:
+    'Browse through curated collections of professional photography. Landscapes, portraits, concerts, and travel photography from Nepal and beyond.',
+  openGraph: {
+    title: 'Photo Gallery | Miran Photography',
+    description:
+      'Explore stunning photography collections - landscapes, portraits, concerts, and travel photography.',
+    images: ['/featured-images/landscape.jpg'],
+  },
+}
 
 const GalleryPage: FunctionComponent = async () => {
   const boards = await getBoards()

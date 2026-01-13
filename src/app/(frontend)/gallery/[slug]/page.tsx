@@ -1,75 +1,96 @@
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
-import CategoryHero from "@/components/gallery/category-hero";
-import MasonryGrid from "@/components/gallery/masonry-grid";
+import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
+import CategoryHero from '@/components/gallery/category-hero'
+import MasonryGrid from '@/components/gallery/masonry-grid'
 import {
   getBoardBySlug,
   getBoardImagesBySlug,
   getBoards,
   getFullImageUrl,
   getImageUrl,
-} from "@/lib/payload";
+} from '@/lib/payload'
 
-export const revalidate = 60;
+export const revalidate = 60
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
-  const boards = await getBoards();
+  const boards = await getBoards()
 
   return boards.map((board) => ({
     slug: board.slug,
-  }));
+  }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const board = await getBoardBySlug(slug);
+  const { slug } = await params
+  const board = await getBoardBySlug(slug)
 
   if (!board) {
     return {
-      title: "Not Found | Miran Photography",
-    };
+      title: 'Not Found',
+      description: 'The requested gallery could not be found.',
+    }
   }
 
+  const heroImageUrl =
+    typeof board.heroImage === 'string'
+      ? board.heroImage
+      : getFullImageUrl(getImageUrl(board.heroImage, 'large'))
+
+  const description =
+    board.description || `Explore the ${board.title} photo gallery by Miran Photography.`
+
   return {
-    title: `${board.title} | Miran Photography`,
-    description: board.description || `${board.title} photo gallery`,
-  };
+    title: board.title,
+    description,
+    openGraph: {
+      title: `${board.title} | Miran Photography`,
+      description,
+      images: [heroImageUrl],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${board.title} | Miran Photography`,
+      description,
+      images: [heroImageUrl],
+    },
+  }
 }
 
 export default async function GalleryCategoryPage({ params }: PageProps) {
-  const { slug } = await params;
+  const { slug } = await params
 
-  const board = await getBoardBySlug(slug);
+  const board = await getBoardBySlug(slug)
 
   if (!board) {
-    notFound();
+    notFound()
   }
 
-  const boardImages = await getBoardImagesBySlug(slug);
+  const boardImages = await getBoardImagesBySlug(slug)
 
   const heroImageUrl =
-    typeof board.heroImage === "string"
+    typeof board.heroImage === 'string'
       ? board.heroImage
-      : getFullImageUrl(getImageUrl(board.heroImage, "large"));
+      : getFullImageUrl(getImageUrl(board.heroImage, 'large'))
 
   const images = boardImages.map((img) => {
-    if (typeof img.image === "string") return img.image;
-    return getFullImageUrl(getImageUrl(img.image, "large"));
-  });
+    if (typeof img.image === 'string') return img.image
+    return getFullImageUrl(getImageUrl(img.image, 'large'))
+  })
 
   return (
     <main className="flex flex-col">
       <CategoryHero
         title={board.title}
-        description={board.description || ""}
+        description={board.description || ''}
         heroImage={heroImageUrl}
         photoCount={images.length}
       />
       <MasonryGrid images={images} title={board.title} />
     </main>
-  );
+  )
 }

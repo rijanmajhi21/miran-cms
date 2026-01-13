@@ -8,13 +8,18 @@ import HeroSection from '@/components/hero-section'
 import ServicesSection from '@/components/home/services/services-section'
 import TestimonialsSection from '@/components/home/testimonials'
 import { getSession } from '@/app/(frontend)/(backend)/actions/auth'
+import { PhotographerSchema, WebsiteSchema } from '@/components/seo/structured-data'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  title: 'Miran | Photography',
+export const metadata: Metadata = {
+  title: 'Miran Photography | Professional Photographer in Nepal',
   description:
-    "Discover the art of photography through Miran's lens. A curated collection of captivating portraits, breathtaking landscapes, and emotive photography that tells stories and captures timeless moments.",
-  icons: {
-    icon: '/favicon.png',
+    "Discover the art of photography through Miran's lens. Professional photography services in Nepal - landscapes, portraits, concerts, and travel photography that tells stories and captures timeless moments.",
+  openGraph: {
+    title: 'Miran Photography | Capturing Moments, Creating Art',
+    description:
+      'Professional photography services in Nepal. Explore stunning landscapes, portraits, and travel photography.',
+    images: ['/featured-images/landscape.jpg'],
   },
 }
 
@@ -23,6 +28,8 @@ export default async function HomePage() {
 
   return (
     <>
+      <PhotographerSchema />
+      <WebsiteSchema />
       <Header user={user} />
       <main className="flex flex-col gap-20 md:gap-24">
         <HeroSection />

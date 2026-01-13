@@ -3,12 +3,6 @@ import GalleryHeader from '@/components/gallery/gallery-header'
 import { getSession } from '@/app/(frontend)/(backend)/actions/auth'
 import { ReactNode } from 'react'
 
-export const metadata = {
-  title: 'Gallery | Miran Photography',
-  description:
-    'Explore my photography collections - from stunning landscapes to captivating portraits and vibrant concerts.',
-}
-
 export default async function GalleryLayout({ children }: { children: ReactNode }) {
   const user = await getSession()
 
