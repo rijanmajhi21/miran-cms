@@ -14,7 +14,11 @@ import { BoardImages } from './collections/BoardImages'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Get the server URL from environment or use default
+const serverURL = process.env.NEXT_PUBLIC_SITE_URL || process.env.PAYLOAD_PUBLIC_SERVER_URL || ''
+
 export default buildConfig({
+  serverURL,
   admin: {
     user: Users.slug,
     importMap: {
@@ -25,9 +29,24 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Boards, BoardImages],
-  cors: ['http://localhost:3000', 'http://localhost:3001', process.env.FRONTEND_URL || ''].filter(
-    Boolean,
-  ),
+  cors: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://miranrai.com.np',
+    'https://www.miranrai.com.np',
+    'https://miranrai.com.np',
+    'https://www.miranrai.com.np',
+    process.env.NEXT_PUBLIC_SITE_URL || '',
+    process.env.FRONTEND_URL || '',
+  ].filter(Boolean),
+  csrf: [
+    'http://localhost:3000',
+    'https://miranrai.com.np',
+    'https://www.miranrai.com.np',
+    'https://miranrai.com.np',
+    'https://www.miranrai.com.np',
+    process.env.NEXT_PUBLIC_SITE_URL || '',
+  ].filter(Boolean),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
