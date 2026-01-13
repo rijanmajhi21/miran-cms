@@ -44,10 +44,10 @@ const HeroSection: FunctionComponent = () => {
       />
 
       <div className="container z-20 absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 sm:px-6">
-        <h1 className="font-heading text-title-5 xs:text-title-4 sm:text-title-3 md:text-title-2 lg:text-title-1 max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl">
+        <h1 className="font-heading text-title-3 sm:text-title-2 lg:text-title-1 max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl">
           Capturing Moments, Creating Art
         </h1>
-        <p className="text-body-small sm:text-body-base md:text-body-big mt-3 sm:mt-4 md:mt-6 max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl opacity-90">
+        <p className="text-body-base md:text-body-big mt-3 sm:mt-4 md:mt-6 max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl opacity-90">
           Explore the world through my lens, where every frame tells a unique story.
         </p>
       </div>

@@ -48,6 +48,38 @@ const MobileMenu: FunctionComponent<MobileMenuProps> = ({ isOpen, onClose, user 
 
       <nav className="container">
         <ul className="flex flex-col gap-6">
+          {/* If logged in: User info at top */}
+          {user && (
+            <li>
+              <div className="flex items-center gap-3 bg-neutral-lighter rounded-xl p-3">
+                <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-neutral-800 text-pure-white font-semibold text-xl">
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <p className="text-base font-medium text-neutral-900 truncate">
+                    {user.email.split('@')[0]}
+                  </p>
+                  <p className="text-sm text-neutral-500 truncate">{user.email}</p>
+                </div>
+              </div>
+            </li>
+          )}
+
+          {/* If not logged in: Login at top */}
+          {!user && (
+            <li>
+              <Link
+                href="/admin"
+                onClick={onClose}
+                className="flex items-center gap-3 text-body-base text-neutral-black hover:opacity-80 transition-opacity py-2"
+              >
+                <ArrowRightOnRectangleIcon className="w-5 h-5" />
+                <span>Login</span>
+              </Link>
+            </li>
+          )}
+
+          {/* Navigation Links */}
           {navLinks.map(({ href, label, icon: Icon }) => (
             <li key={label}>
               <Link
@@ -61,11 +93,10 @@ const MobileMenu: FunctionComponent<MobileMenuProps> = ({ isOpen, onClose, user 
             </li>
           ))}
 
-          {/* Divider */}
-          <li className="border-t border-neutral-200 pt-4 mt-2">
-            {user ? (
-              <div className="flex flex-col gap-4">
-                <p className="text-sm text-neutral-500">Signed in as {user.email}</p>
+          {/* If logged in: Dashboard and Logout at bottom */}
+          {user && (
+            <>
+              <li className="border-t border-neutral-200 pt-4">
                 <Link
                   href="/admin"
                   onClick={onClose}
@@ -74,6 +105,8 @@ const MobileMenu: FunctionComponent<MobileMenuProps> = ({ isOpen, onClose, user 
                   <Squares2X2Icon className="w-5 h-5" />
                   <span>Dashboard</span>
                 </Link>
+              </li>
+              <li>
                 <button
                   onClick={handleLogout}
                   disabled={isLoggingOut}
@@ -82,18 +115,9 @@ const MobileMenu: FunctionComponent<MobileMenuProps> = ({ isOpen, onClose, user 
                   <ArrowRightOnRectangleIcon className="w-5 h-5" />
                   <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
                 </button>
-              </div>
-            ) : (
-              <Link
-                href="/admin"
-                onClick={onClose}
-                className="flex items-center gap-3 text-body-base text-neutral-black hover:opacity-80 transition-opacity py-2"
-              >
-                <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                <span>Login</span>
-              </Link>
-            )}
-          </li>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </div>
