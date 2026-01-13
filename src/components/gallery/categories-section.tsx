@@ -20,7 +20,6 @@ const CategoriesSection: FunctionComponent<CategoriesSectionProps> = ({ categori
         {categories.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
             {categories.map((category) => {
-              // Get up to 3 images, using heroImage as first fallback
               const displayImages =
                 category.images.length > 0
                   ? category.images.slice(0, 3)

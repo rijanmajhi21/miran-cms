@@ -9,7 +9,6 @@ export interface CategoryCardProps {
   photoCount?: number
 }
 
-// Placeholder component for empty image slots
 const ImagePlaceholder = () => (
   <div className="absolute inset-0 bg-neutral-100 border border-neutral-200" />
 )
@@ -20,7 +19,6 @@ const CategoryCard: FunctionComponent<CategoryCardProps> = ({
   images,
   photoCount,
 }) => {
-  // Ensure we always have 3 slots (fill with null if less than 3 images)
   const imageSlots = [images[0] || null, images[1] || null, images[2] || null]
   const actualPhotoCount = photoCount ?? images.filter(Boolean).length
 
@@ -29,7 +27,6 @@ const CategoryCard: FunctionComponent<CategoryCardProps> = ({
       <article className="flex flex-col">
         <div className="relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden border border-neutral-200">
           <div className="absolute inset-0 grid grid-cols-[1fr_0.6fr] gap-0.5">
-            {/* Main large image */}
             <div className="relative h-full overflow-hidden">
               {imageSlots[0] ? (
                 <Image
@@ -44,7 +41,6 @@ const CategoryCard: FunctionComponent<CategoryCardProps> = ({
               )}
             </div>
 
-            {/* Two smaller images */}
             <div className="flex flex-col gap-0.5">
               <div className="relative flex-1 overflow-hidden">
                 {imageSlots[1] ? (

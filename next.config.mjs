@@ -11,6 +11,20 @@ const nextConfig = {
       bodySizeLimit: '5mb',
     },
   },
+  // Allow images from Supabase Storage
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fwcsnhkbxinhqwcgotvo.supabase.co',
+      },
+    ],
+  },
   // Your Next.js config here
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
