@@ -16,7 +16,7 @@ const nextConfig = {
       bodySizeLimit: '5mb',
     },
   },
-  // Allow images from Supabase Storage
+  // Allow images from Supabase Storage (both domains)
   images: {
     remotePatterns: [
       {
@@ -26,7 +26,16 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '*.storage.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'fwcsnhkbxinhqwcgotvo.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'fwcsnhkbxinhqwcgotvo.storage.supabase.co',
       },
     ],
   },

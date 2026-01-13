@@ -4,6 +4,8 @@ import type { PayloadMedia } from '@/types/board'
 const SUPABASE_PROJECT_REF =
   process.env.SUPABASE_PROJECT_REF || process.env.NEXT_PUBLIC_SUPABASE_PROJECT_REF || ''
 const S3_BUCKET = process.env.S3_BUCKET || process.env.NEXT_PUBLIC_S3_BUCKET || 'media'
+
+// Public URL uses the main supabase.co domain (not .storage.supabase.co)
 const SUPABASE_STORAGE_URL = SUPABASE_PROJECT_REF
   ? `https://${SUPABASE_PROJECT_REF}.supabase.co/storage/v1/object/public/${S3_BUCKET}`
   : ''
