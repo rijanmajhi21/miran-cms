@@ -1,5 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -34,15 +34,11 @@ export default buildConfig({
     'http://localhost:3001',
     'https://miranrai.com.np',
     'https://www.miranrai.com.np',
-    'https://miranrai.com.np',
-    'https://www.miranrai.com.np',
     process.env.NEXT_PUBLIC_SITE_URL || '',
     process.env.FRONTEND_URL || '',
   ].filter(Boolean),
   csrf: [
     'http://localhost:3000',
-    'https://miranrai.com.np',
-    'https://www.miranrai.com.np',
     'https://miranrai.com.np',
     'https://www.miranrai.com.np',
     process.env.NEXT_PUBLIC_SITE_URL || '',
@@ -59,18 +55,21 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    // Vercel Blob storage for media uploads
-    // Check multiple possible token names
-    vercelBlobStorage({
-      enabled: true,
+    // Supabase Storage (S3-compatible)
+    s3Storage({
       collections: {
         media: true,
       },
-      token:
-        process.env.BLOB_READ_WRITE_TOKEN ||
-        process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
-        process.env.STORAGE_READ_WRITE_TOKEN ||
-        '',
+      bucket: process.env.S3_BUCKET || 'media',
+      config: {
+        endpoint: process.env.S3_ENDPOINT || '',
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+        region: process.env.S3_REGION || 'ap-southeast-1',
+        forcePathStyle: true,
+      },
     }),
   ],
 })
