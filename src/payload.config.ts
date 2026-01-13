@@ -137,6 +137,7 @@ export default buildConfig({
         media: {
           adapter: supabaseStorageAdapter,
           disableLocalStorage: true,
+          disablePayloadAccessControl: true, // Use adapter's URL, not Payload's
         },
       },
     }),
