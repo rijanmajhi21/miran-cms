@@ -1,6 +1,7 @@
 import Image from '@/components/commons/image'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
+import { getFullImageUrl } from '@/lib/image-utils'
 
 export interface CategoryCardProps {
   title: string
@@ -30,7 +31,7 @@ const CategoryCard: FunctionComponent<CategoryCardProps> = ({
             <div className="relative h-full overflow-hidden">
               {imageSlots[0] ? (
                 <Image
-                  src={imageSlots[0]}
+                  src={getFullImageUrl(imageSlots[0])}
                   alt={`${title} - Photo 1`}
                   fill
                   sizes="(max-width: 640px) 30vw, (max-width: 1024px) 30vw, 20vw"

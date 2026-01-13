@@ -12,7 +12,7 @@ import { PhotographerSchema, WebsiteSchema } from '@/components/seo/structured-d
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Miran Photography | Professional Photographer in Nepal',
+  title: 'Miran Photography | Professional Photographer',
   description:
     "Discover the art of photography through Miran's lens. Professional photography services in Nepal - landscapes, portraits, concerts, and travel photography that tells stories and captures timeless moments.",
   openGraph: {
