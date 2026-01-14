@@ -91,6 +91,7 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
 
   return (
     <>
+      {/* Masonry Grid */}
       <section className="container py-8 md:py-12">
         <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3 sm:gap-4">
           {images.map((image, index: number) => (
@@ -111,6 +112,12 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
                 />
                 <div className="absolute inset-0 bg-neutral-black/0 group-hover:bg-neutral-black/10 transition-colors duration-300" />
               </div>
+              {/* Image title below */}
+              {image.title && (
+                <p className="mt-2 text-body-small text-neutral-black truncate px-0.5">
+                  {image.title}
+                </p>
+              )}
             </div>
           ))}
         </div>
@@ -119,10 +126,10 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
       {/* Instagram-style Modal */}
       {selectedIndex !== null && selectedImage && (
         <div
-          className="fixed inset-0 z-50 bg-neutral-black/90 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-neutral-black/90 flex items-center justify-center p-0 md:p-6"
           onClick={closeModal}
         >
-          {/* Close button - top right */}
+          {/* Close button */}
           <button
             className="absolute top-4 right-4 z-30 p-2 rounded-full bg-pure-white/10 hover:bg-pure-white/20 text-pure-white transition-colors"
             onClick={closeModal}
@@ -131,10 +138,10 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
             <XMarkIcon className="w-6 h-6" />
           </button>
 
-          {/* Navigation arrow - LEFT (outside modal) */}
+          {/* Navigation arrows - Desktop only */}
           {selectedIndex > 0 && (
             <button
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-pure-white/10 hover:bg-pure-white/20 text-pure-white transition-colors"
+              className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-pure-white/10 hover:bg-pure-white/20 text-pure-white transition-colors"
               onClick={(e) => {
                 e.stopPropagation()
                 goToPrev()
@@ -145,10 +152,9 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
             </button>
           )}
 
-          {/* Navigation arrow - RIGHT (outside modal) */}
           {selectedIndex < images.length - 1 && (
             <button
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-pure-white/10 hover:bg-pure-white/20 text-pure-white transition-colors"
+              className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-pure-white/10 hover:bg-pure-white/20 text-pure-white transition-colors"
               onClick={(e) => {
                 e.stopPropagation()
                 goToNext()
@@ -159,34 +165,33 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
             </button>
           )}
 
-          {/* Modal Content - Instagram Style */}
+          {/* Modal Content - Fixed height, no layout shift */}
           <div
-            className="relative bg-pure-white rounded-xl sm:rounded-2xl shadow-2xl w-[calc(100%-120px)] max-w-5xl max-h-[85vh] overflow-hidden flex flex-col md:flex-row"
+            className="relative bg-pure-white w-full h-full md:w-[90vw] md:max-w-6xl md:h-[85vh] md:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Left side - Image (natural aspect ratio) */}
-            <div className="relative bg-neutral-black flex items-center justify-center md:flex-1 overflow-hidden">
-              <Image
+            {/* Left side - Image (fixed height, image adapts) */}
+            <div className="relative bg-neutral-black flex-1 flex items-center justify-center min-h-[40vh] md:min-h-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={selectedImage.url}
                 alt={selectedImage.title || `${boardTitle} - Photo ${selectedIndex + 1}`}
-                width={1200}
-                height={1200}
-                sizes="(max-width: 768px) 100vw, 60vw"
-                className="w-auto h-auto max-w-full max-h-[50vh] md:max-h-[85vh] object-contain"
-                priority
+                className="max-w-full max-h-full object-contain"
+                style={{ maxHeight: 'calc(85vh - 0px)' }}
               />
             </div>
 
-            {/* Right side - Details */}
-            <div className="w-full md:w-80 lg:w-[340px] flex flex-col border-t md:border-t-0 md:border-l border-neutral-200 bg-pure-white max-h-[40vh] md:max-h-none">
+            {/* Right side - Details (scrollable) */}
+            <div className="w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col bg-pure-white border-t md:border-t-0 md:border-l border-neutral-200 overflow-hidden">
               {/* Header */}
               <div className="p-4 border-b border-neutral-200 shrink-0">
                 <p className="text-body-small text-neutral-sub-text">
-                  {selectedIndex + 1} of {images.length} • {boardTitle}
+                  {selectedIndex + 1} of {images.length}
                 </p>
+                <p className="text-body-base text-neutral-black font-medium">{boardTitle}</p>
               </div>
 
-              {/* Content */}
+              {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {/* Title */}
                 {selectedImage.title && (
@@ -254,9 +259,7 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
                   !selectedImage.dateTaken &&
                   !selectedImage.camera && (
                     <div className="flex flex-col items-center justify-center py-8 text-center">
-                      <p className="text-body-base text-neutral-sub-text-alt">
-                        No details available
-                      </p>
+                      <p className="text-body-base text-neutral-sub-text-alt">No details available</p>
                     </div>
                   )}
               </div>

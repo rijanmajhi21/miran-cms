@@ -27,11 +27,13 @@ const GalleryPage: FunctionComponent = async () => {
       // Fetch board images for this board
       const boardImages = await getBoardImages(board.id)
 
-      // Get image URLs from board images
-      const images = boardImages.map((img) => {
-        if (typeof img.image === 'string') return img.image
-        return getFullImageUrl(getImageUrl(img.image, 'card'))
-      })
+      // Get image URLs from board images (filter out empty strings)
+      const images = boardImages
+        .map((img) => {
+          if (typeof img.image === 'string') return img.image
+          return getFullImageUrl(getImageUrl(img.image, 'card'))
+        })
+        .filter((url) => url && url.length > 0)
 
       return {
         slug: board.slug,

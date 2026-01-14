@@ -65,19 +65,25 @@ export default async function GalleryCategoryPage({ params }: PageProps) {
       : getFullImageUrl(getImageUrl(board.heroImage, 'large'))
 
   // Transform board images to gallery images with full details
-  const images: GalleryImage[] = boardImages.map((img) => {
-    const imageUrl =
-      typeof img.image === 'string' ? img.image : getFullImageUrl(getImageUrl(img.image, 'large'))
+  const images: GalleryImage[] = boardImages
+    .filter((img) => {
+      const imageUrl =
+        typeof img.image === 'string' ? img.image : getFullImageUrl(getImageUrl(img.image, 'large'))
+      return imageUrl && imageUrl.length > 0
+    })
+    .map((img) => {
+      const imageUrl =
+        typeof img.image === 'string' ? img.image : getFullImageUrl(getImageUrl(img.image, 'large'))
 
-    return {
-      url: imageUrl,
-      title: img.title || '',
-      description: img.description || '',
-      location: img.location || '',
-      dateTaken: img.dateTaken || '',
-      camera: img.camera || '',
-    }
-  })
+      return {
+        url: imageUrl,
+        title: img.title,
+        description: img.description,
+        location: img.location,
+        dateTaken: img.dateTaken,
+        camera: img.camera,
+      }
+    })
 
   return (
     <main className="flex flex-col">
