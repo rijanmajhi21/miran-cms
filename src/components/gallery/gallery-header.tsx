@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
@@ -35,15 +34,10 @@ const GalleryHeader: FunctionComponent<GalleryHeaderProps> = ({ user = null }) =
     <header className="sticky top-0 z-50 bg-pure-white border-b border-neutral-light">
       <div className="container flex items-center justify-between py-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo/MIRAN.png"
-            alt="Miran Photography"
-            width={100}
-            height={32}
-            className="h-7 md:h-8 w-auto"
-            priority
-          />
+        <Link href="/" className="shrink-0">
+          <span className="text-body-big-bold md:text-title-4 text-neutral-black font-bold">
+            miran
+          </span>
         </Link>
 
         {/* Desktop Nav */}

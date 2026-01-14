@@ -45,6 +45,7 @@ const GalleryPage: FunctionComponent = async () => {
             ? board.heroImage
             : getFullImageUrl(getImageUrl(board.heroImage, 'card')),
         images,
+        updatedAt: board.updatedAt,
       }
     }),
   )

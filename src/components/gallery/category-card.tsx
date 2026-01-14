@@ -10,9 +10,7 @@ export interface CategoryCardProps {
   photoCount?: number
 }
 
-const ImagePlaceholder = () => (
-  <div className="absolute inset-0 bg-neutral-100 border border-neutral-200" />
-)
+const ImagePlaceholder = () => <div className="absolute inset-0 bg-neutral-100" />
 
 const CategoryCard: FunctionComponent<CategoryCardProps> = ({
   title,
@@ -26,9 +24,10 @@ const CategoryCard: FunctionComponent<CategoryCardProps> = ({
   return (
     <Link href={href} className="group block">
       <article className="flex flex-col">
-        <div className="relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden border border-neutral-200">
-          <div className="absolute inset-0 grid grid-cols-[1fr_0.6fr] gap-0.5">
-            <div className="relative h-full overflow-hidden">
+        <div className="relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden border border-neutral-300">
+          <div className="absolute inset-0 grid grid-cols-[1fr_0.6fr]">
+            {/* Left image */}
+            <div className="relative h-full overflow-hidden border-r border-neutral-300">
               {imageSlots[0] ? (
                 <Image
                   src={getFullImageUrl(imageSlots[0])}
@@ -42,8 +41,9 @@ const CategoryCard: FunctionComponent<CategoryCardProps> = ({
               )}
             </div>
 
-            <div className="flex flex-col gap-0.5">
-              <div className="relative flex-1 overflow-hidden">
+            {/* Right column */}
+            <div className="flex flex-col">
+              <div className="relative flex-1 overflow-hidden border-b border-neutral-300">
                 {imageSlots[1] ? (
                   <Image
                     src={imageSlots[1]}
