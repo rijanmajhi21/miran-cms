@@ -1,6 +1,6 @@
 import CategoriesSection from '@/components/gallery/categories-section'
 import GalleryHero from '@/components/gallery/gallery-hero'
-import { getBoards, getFullImageUrl, getImageUrl } from '@/lib/payload'
+import { getBoards, getBoardImages, getFullImageUrl, getImageUrl } from '@/lib/payload'
 import { FunctionComponent } from 'react'
 import type { Metadata } from 'next'
 
@@ -23,17 +23,28 @@ const GalleryPage: FunctionComponent = async () => {
   const boards = await getBoards()
 
   const categories = await Promise.all(
-    boards.map(async (board) => ({
-      slug: board.slug,
-      title: board.title,
-      description: board.description || '',
-      href: `/gallery/${board.slug}`,
-      heroImage:
-        typeof board.heroImage === 'string'
-          ? board.heroImage
-          : await getFullImageUrl(await getImageUrl(board.heroImage, 'card')),
-      images: [],
-    })),
+    boards.map(async (board) => {
+      // Fetch board images for this board
+      const boardImages = await getBoardImages(board.id)
+
+      // Get image URLs from board images
+      const images = boardImages.map((img) => {
+        if (typeof img.image === 'string') return img.image
+        return getFullImageUrl(getImageUrl(img.image, 'card'))
+      })
+
+      return {
+        slug: board.slug,
+        title: board.title,
+        description: board.description || '',
+        href: `/gallery/${board.slug}`,
+        heroImage:
+          typeof board.heroImage === 'string'
+            ? board.heroImage
+            : getFullImageUrl(getImageUrl(board.heroImage, 'card')),
+        images,
+      }
+    }),
   )
 
   return (

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import CategoryHero from '@/components/gallery/category-hero'
-import MasonryGrid from '@/components/gallery/masonry-grid'
+import MasonryGrid, { GalleryImage } from '@/components/gallery/masonry-grid'
 import { getBoardBySlug, getBoardImagesBySlug, getFullImageUrl, getImageUrl } from '@/lib/payload'
 
 // Dynamic rendering - layout uses session headers
@@ -64,9 +64,19 @@ export default async function GalleryCategoryPage({ params }: PageProps) {
       ? board.heroImage
       : getFullImageUrl(getImageUrl(board.heroImage, 'large'))
 
-  const images = boardImages.map((img) => {
-    if (typeof img.image === 'string') return img.image
-    return getFullImageUrl(getImageUrl(img.image, 'large'))
+  // Transform board images to gallery images with full details
+  const images: GalleryImage[] = boardImages.map((img) => {
+    const imageUrl =
+      typeof img.image === 'string' ? img.image : getFullImageUrl(getImageUrl(img.image, 'large'))
+
+    return {
+      url: imageUrl,
+      title: img.title || '',
+      description: img.description || '',
+      location: img.location || '',
+      dateTaken: img.dateTaken || '',
+      camera: img.camera || '',
+    }
   })
 
   return (
@@ -77,7 +87,7 @@ export default async function GalleryCategoryPage({ params }: PageProps) {
         heroImage={heroImageUrl}
         photoCount={images.length}
       />
-      <MasonryGrid images={images} title={board.title} />
+      <MasonryGrid images={images} boardTitle={board.title} />
     </main>
   )
 }

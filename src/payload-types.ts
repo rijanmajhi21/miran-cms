@@ -259,7 +259,7 @@ export interface BoardImage {
    */
   camera?: string | null;
   /**
-   * Display order within the board (lower numbers appear first)
+   * Display order within the board (auto-assigned, lower = first)
    */
   order?: number | null;
   /**

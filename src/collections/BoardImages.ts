@@ -97,8 +97,9 @@ export const BoardImages: CollectionConfig = {
       type: 'number',
       defaultValue: 0,
       admin: {
-        description: 'Display order within the board (lower numbers appear first)',
+        description: 'Display order within the board (auto-assigned, lower = first)',
         position: 'sidebar',
+        readOnly: true,
       },
     },
     {
