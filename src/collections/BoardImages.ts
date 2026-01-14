@@ -14,6 +14,28 @@ export const BoardImages: CollectionConfig = {
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => Boolean(user),
   },
+  hooks: {
+    beforeChange: [
+      async ({ data, operation, req }) => {
+        // Auto-increment order for new images
+        if (operation === 'create' && data?.board) {
+          const boardId = typeof data.board === 'object' ? data.board.id : data.board
+
+          // Find the highest order in this board
+          const existing = await req.payload.find({
+            collection: 'board-images',
+            where: { board: { equals: boardId } },
+            sort: '-order',
+            limit: 1,
+          })
+
+          const highestOrder = existing.docs[0]?.order ?? -1
+          data.order = highestOrder + 1
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'title',
@@ -90,4 +112,3 @@ export const BoardImages: CollectionConfig = {
     },
   ],
 }
-
