@@ -89,6 +89,16 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
     }
   }
 
+  // Capitalize first letter of each word, rest lowercase
+  const capitalizeText = (text: string) => {
+    if (!text) return ''
+    return text
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  }
+
   return (
     <>
       {/* Masonry Grid */}
@@ -165,19 +175,19 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
             </button>
           )}
 
-          {/* Modal Content - Fixed height, no layout shift */}
+          {/* Modal Content - Fixed height on desktop, adaptive on mobile */}
           <div
-            className="relative bg-pure-white w-full h-full md:w-[90vw] md:max-w-6xl md:h-[85vh] md:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
+            className="relative bg-pure-white w-full h-full md:w-[90vw] md:max-w-6xl md:h-[85vh] md:rounded-2xl shadow-2xl overflow-y-auto md:overflow-hidden flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Left side - Image (fixed height, image adapts) */}
-            <div className="relative bg-neutral-black flex-1 flex items-center justify-center min-h-[40vh] md:min-h-0">
+            {/* Left side - Image (adaptive height on mobile, fixed on desktop) */}
+            <div className="relative bg-neutral-black shrink-0 md:flex-1 flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={selectedImage.url}
                 alt={selectedImage.title || `${boardTitle} - Photo ${selectedIndex + 1}`}
-                className="max-w-full max-h-full object-contain"
-                style={{ maxHeight: 'calc(85vh - 0px)' }}
+                className="w-full h-auto md:w-auto md:h-auto md:max-w-full md:max-h-full object-contain"
+                style={{ maxHeight: 'calc(85vh)' }}
               />
             </div>
 
@@ -217,10 +227,12 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
                     <div className="flex items-start gap-3">
                       <MapPinIcon className="w-5 h-5 text-neutral-sub-text-alt shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-caption text-neutral-sub-text-alt uppercase tracking-wide">
+                        <p className="text-caption text-neutral-sub-text-alt tracking-wide">
                           Location
                         </p>
-                        <p className="text-body-base text-neutral-black">{selectedImage.location}</p>
+                        <p className="text-body-base text-neutral-black">
+                          {capitalizeText(selectedImage.location)}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -243,10 +255,12 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
                     <div className="flex items-start gap-3">
                       <CameraIcon className="w-5 h-5 text-neutral-sub-text-alt shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-caption text-neutral-sub-text-alt uppercase tracking-wide">
+                        <p className="text-caption text-neutral-sub-text-alt tracking-wide">
                           Camera
                         </p>
-                        <p className="text-body-base text-neutral-black">{selectedImage.camera}</p>
+                        <p className="text-body-base text-neutral-black">
+                          {capitalizeText(selectedImage.camera)}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -259,7 +273,9 @@ const MasonryGrid: FunctionComponent<MasonryGridProps> = ({ images, boardTitle }
                   !selectedImage.dateTaken &&
                   !selectedImage.camera && (
                     <div className="flex flex-col items-center justify-center py-8 text-center">
-                      <p className="text-body-base text-neutral-sub-text-alt">No details available</p>
+                      <p className="text-body-base text-neutral-sub-text-alt">
+                        No details available
+                      </p>
                     </div>
                   )}
               </div>
